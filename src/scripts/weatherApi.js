@@ -5,20 +5,17 @@ const weatherApi = (() => {
         try {
             const response = await fetch(url);
             const data = await response.json();
-            getIcons(data.forecast.forecastday);
+            console.log(data.forecast.forecastday[1].day.maxtemp_c)
+            return data.forecast.forecastday.map(day => ({
+                date: day.date + "T00:00:00",
+                condition: day.day.condition.text,
+                icon: day.day.condition.icon,
+                maxtemp: day.day.maxtemp_c,
+                mintemp: day.day.mintemp_c,
+            }))
         } catch (error) {
             console.error(error);
         }
-    }
-
-    const getIcons = (forecast) => {
-        let weatherNames = [];
-        
-        for(let a of forecast) {
-            weatherNames.push(a.day.condition.icon);
-        }
-
-        console.log(weatherNames);
     }
 
     return {
