@@ -5,22 +5,19 @@ const weatherApi = (() => {
         try {
             const response = await fetch(url);
             const data = await response.json();
-            console.log(data.forecast.forecastday);
             getIcons(data.forecast.forecastday);
         } catch (error) {
             console.error(error);
         }
-
-        getAlerts(place);
     }
 
     const getIcons = (forecast) => {
         let weatherNames = [];
         
         for(let a of forecast) {
-            weatherNames.push(a.day.condition.text);
+            weatherNames.push(a.day.condition.icon);
         }
-        
+
         console.log(weatherNames);
     }
 
