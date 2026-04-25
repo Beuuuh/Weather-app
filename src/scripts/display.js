@@ -1,4 +1,5 @@
 import { weatherApi } from "./weatherApi.js"
+import { Chart } from 'chart.js/auto'
 
 const display = (() => {
     const content = document.querySelector(".content");
@@ -36,6 +37,30 @@ const display = (() => {
         document.querySelector(".send").addEventListener("click", () => {
             cardDiv.innerHTML = "";
             renderCards(document.querySelector(".input").value);
+            renderChart(document.querySelector(".input").value);
+        })
+    }
+
+    const renderChart = async (place) => {
+        let forecast = await weatherApi.getForecast(place);
+        const canvasDiv = document.createElement("div");
+        canvasDiv.setAttribute("class", "canvasDiv");
+        canvasDiv.innerHTML = `<canvas id="temperature"></canvas>`;
+        content.appendChild(canvasDiv);
+
+        new Chart(document.querySelector("#temperature"), {
+            type: "line",
+            data: {
+                labels: forecast[0].hour.map( hour => hour.time.slice(11, 16) ),
+                datasets: [{
+                    label: "Temperature in Celsius",
+                    data: forecast[0].hour.map( hour => hour.temp ),
+                    fill: true,
+                    backgroundColor: 'rgba(72, 132, 163, 0.3)',
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.05
+                }]
+            }
         })
     }
 
