@@ -5,11 +5,16 @@ const weatherApi = (() => {
         try {
             const response = await fetch(url);
             const data = await response.json();
-            console.log(data.forecast.forecastday[1].day.maxtemp_c)
+            console.log(data.forecast.forecastday[1].day.maxtemp_c);
+            console.log(data.forecast.forecastday[1].hour);
             return data.forecast.forecastday.map(day => ({
                 date: day.date + "T00:00:00",
                 condition: day.day.condition.text,
                 icon: day.day.condition.icon,
+                hour: day.hour.map(hours => ({
+                    time: hours.time,
+                    temp: hours.temp_c
+                })),
                 maxtemp: day.day.maxtemp_c,
                 mintemp: day.day.mintemp_c,
             }))
