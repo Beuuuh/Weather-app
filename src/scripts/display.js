@@ -45,10 +45,11 @@ const display = (() => {
         let forecast = await weatherApi.getForecast(place);
         const canvasDiv = document.createElement("div");
         canvasDiv.setAttribute("class", "canvasDiv");
+        canvasDiv.setAttribute("style", "position: relative; height:50vh; width:80vw");
         canvasDiv.innerHTML = `<canvas id="temperature"></canvas>`;
         content.appendChild(canvasDiv);
 
-        new Chart(document.querySelector("#temperature"), {
+        const chart = new Chart(document.querySelector("#temperature"), {
             type: "line",
             data: {
                 labels: forecast[0].hour.map( hour => hour.time.slice(11, 16) ),
