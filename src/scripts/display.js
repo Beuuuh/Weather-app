@@ -4,7 +4,9 @@ import { Chart } from 'chart.js/auto'
 const display = (() => {
     const content = document.querySelector(".content");
     const cardDiv = document.createElement("div");
-    cardDiv.setAttribute("class", "cardDiv");
+    let chart = null
+    
+    cardDiv.setAttribute("class", "cardsDiv");
     
     const renderCards = async (place) => {
         let forecast = await weatherApi.getForecast(place);
@@ -43,19 +45,28 @@ const display = (() => {
 
     const renderChart = async (place) => {
         let forecast = await weatherApi.getForecast(place);
-        const canvasDiv = document.createElement("div");
-        canvasDiv.setAttribute("class", "canvasDiv");
-        canvasDiv.setAttribute("style", "position: relative; height:50vh; width:80vw");
-        canvasDiv.innerHTML = `<canvas id="temperature"></canvas>`;
-        content.appendChild(canvasDiv);
+        let canvasDiv = document.querySelector(".canvasDiv");
 
-        const chart = new Chart(document.querySelector("#temperature"), {
+        if(!canvasDiv) {
+            canvasDiv = document.createElement("div");
+            canvasDiv.setAttribute("class", "canvasDiv");
+            canvasDiv.setAttribute("style", "position: relative; height:50vh; width:80vw");
+            canvasDiv.innerHTML = `<canvas id="temperature"></canvas>`;
+            content.appendChild(canvasDiv);
+        }
+    
+        if(chart) {
+            chart.destroy();
+            chart = null;
+        }
+    
+        chart = new Chart(document.querySelector("#temperature"), {
             type: "line",
             data: {
-                labels: forecast[0].hour.map( hour => hour.time.slice(11, 16) ),
+                labels: forecast[0].hour.map(hour => hour.time.slice(11, 16)),
                 datasets: [{
                     label: "Temperature in Celsius",
-                    data: forecast[0].hour.map( hour => hour.temp ),
+                    data: forecast[0].hour.map(hour => hour.temp),
                     fill: true,
                     backgroundColor: 'rgba(72, 132, 163, 0.3)',
                     borderColor: 'rgb(75, 192, 192)',
