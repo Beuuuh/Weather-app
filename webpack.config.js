@@ -26,5 +26,11 @@ module.exports = {
     port: 3000,
     open: true,
   },
-  mode: 'development',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+    publicPath: './',
+  },
+  mode: 'production',
 };
