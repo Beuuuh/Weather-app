@@ -50,7 +50,7 @@ const display = (() => {
         if(!canvasDiv) {
             canvasDiv = document.createElement("div");
             canvasDiv.setAttribute("class", "canvasDiv");
-            canvasDiv.setAttribute("style", "position: relative; height:50vh; width:80vw");
+            canvasDiv.setAttribute("style", "position: relative; height: 40vh; width: 100%; max-width: 800px; min-width: 0; margin: 0 auto;");
             canvasDiv.innerHTML = `<canvas id="temperature"></canvas>`;
             content.appendChild(canvasDiv);
         }
@@ -71,7 +71,11 @@ const display = (() => {
                     backgroundColor: 'rgba(72, 132, 163, 0.3)',
                     borderColor: 'rgb(75, 192, 192)',
                     tension: 0.05
-                }]
+                }],
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
             }
         })
     }
